@@ -1,32 +1,46 @@
 const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema({
-  gmail: {
-    type: mongoose.SchemaTypes.String,
-    trim: true,
-    unique: true,
-    required: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please fill a valid email address",
-    ],
+const UserSchema = new mongoose.Schema(
+  {
+    email: {
+      type: mongoose.SchemaTypes.String,
+      trim: true,
+      unique: true,
+      required: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Please fill a valid email address",
+      ],
+    },
+    password: {
+      type: mongoose.SchemaTypes.String, // Corrected data type
+      required: true,
+    },
+    fullname: {
+      type: mongoose.SchemaTypes.String, // Corrected data type
+      required: true,
+    },
+    subscription_status: {
+      type: mongoose.SchemaTypes.String,
+    },
+    post_ref_id: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Position",
+    },
+    role: {
+      type: mongoose.SchemaTypes.String,
+      enum: ["user", "admin", "super_admin"],
+      default: "user",
+    },
   },
-  password: {
-    type: mongoose.SchemaTypes.String, // Corrected data type
-    required: true,
-  },
-  phone_number: {
-    type: mongoose.SchemaTypes.Number,
-    required: true,
-  },
-  subscription_status: {
-    type: mongoose.SchemaTypes.String,
-  },
-  post_ref_id: {
-    type: mongoose.SchemaTypes.ObjectId,
-    ref: "Position",
-  },
-});
+  {
+    versionKey: false,
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
+  }
+);
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;
