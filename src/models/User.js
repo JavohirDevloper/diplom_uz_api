@@ -13,11 +13,11 @@ const UserSchema = new mongoose.Schema(
       ],
     },
     password: {
-      type: mongoose.SchemaTypes.String, // Corrected data type
+      type: mongoose.SchemaTypes.String,
       required: true,
     },
     fullname: {
-      type: mongoose.SchemaTypes.String, // Corrected data type
+      type: mongoose.SchemaTypes.String,
       required: true,
     },
     subscription_status: {
@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: mongoose.SchemaTypes.String,
-      enum: ["user", "admin", "super_admin"],
+      enum: ["user", "admin"],
       default: "user",
     },
   },
