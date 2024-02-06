@@ -7,10 +7,10 @@ const incomeSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
   },
-  //   file_ref_id: {
-  // type: mongoose.SchemaTypes.ObjectId,
-  //     ref: "File"
-  //   },
+  file_ref_id: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "File",
+  },
 });
 
 const Income = mongoose.model("Income", incomeSchema);
