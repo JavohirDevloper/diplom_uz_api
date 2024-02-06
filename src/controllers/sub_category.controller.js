@@ -84,9 +84,7 @@ const updateSubCategory = async (req, res) => {
 const deleteSubCategory = async (req, res) => {
   try {
     const subCategoryId = req.params.id;
-    const deletedSubCategory = await SubCategory.findByIdAndDelete(
-      subCategoryId
-    );
+    const deletedSubCategory = await SubCategory.findByIdAndDelete(subCategoryId);
     if (!deletedSubCategory) {
       return res.status(404).json({ error: "SubCategory not found" });
     }
@@ -96,6 +94,7 @@ const deleteSubCategory = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
 
 module.exports = {
   createSubCategory,
