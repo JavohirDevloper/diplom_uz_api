@@ -6,6 +6,7 @@ const handleError = require("./shared/errors/handle");
 const UserRouter = require("./routers/user.router.js");
 const ViewsRouter = require("./routers/views.router.js");
 const IncomeRouter = require("./routers/income.router.js");
+const  AdminRouter = require("./routers/admin.router.js");
 dotenv.config();
 const app = express();
 // app use
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(UserRouter);
 app.use(ViewsRouter)
 app.use(IncomeRouter);
+app.use(AdminRouter);
 // db
 db();
 // error handle
