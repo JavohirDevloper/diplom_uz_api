@@ -156,7 +156,6 @@ const updateUser = async (req, res) => {
       fullname: Joi.string(),
       email: Joi.string().email(),
       password: Joi.string().min(4),
-      // Diğer alanlar ve doğrulama kuralları
     });
 
     const { error } = schema.validate(req.body);
