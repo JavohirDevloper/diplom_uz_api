@@ -1,10 +1,10 @@
 const Joi = require("joi");
-const User = require("../models/User");
+const Admin = require("../models/Admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// register user
-const registerAndLoginUser = async (req, res) => {
+// register Admin
+const registerAndLoginAdmin = async (req, res) => {
   try {
     const schema = Joi.object({
       fullname: Joi.string().required(),
@@ -19,28 +19,28 @@ const registerAndLoginUser = async (req, res) => {
 
     const { fullname, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const existingAdmin = await Admin.findOne({ email });
+    if (existingAdmin) {
       return res.status(409).json({ error: "Email already exists" });
     }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new User({ fullname, email, password: hashedPassword });
-    const savedUser = await newUser.save();
+    const newAdmin = new Admin({ fullname, email, password: hashedPassword });
+    const savedAdmin = await newAdmin.save();
 
-    const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: savedAdmin._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
-    res.status(201).json({ token, user: savedUser });
+    res.status(201).json({ token, Admin: savedAdmin });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-const registerUser = async (req, res) => {
+const registerAdmin = async (req, res) => {
   try {
     const schema = Joi.object({
       fullname: Joi.string().required(),
@@ -53,13 +53,13 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    await registerAndLoginUser(req, res);
+    await registerAndLoginAdmin(req, res);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
-// login user
-const loginUser = async (req, res) => {
+// login Admin
+const loginAdmin = async (req, res) => {
   try {
     const schema = Joi.object({
       email: Joi.string().email().required(),
@@ -73,28 +73,28 @@ const loginUser = async (req, res) => {
 
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user) {
+    const admin = await Admin.findOne({ email });
+    if (!admin) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
-    res.status(200).json({ token, user });
+    res.status(200).json({ token, admin });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 // Foydalanuvchini yaratish
-const createUser = async (req, res) => {
+const createAdmin = async (req, res) => {
   try {
     const schema = Joi.object({
       fullname: Joi.string().required(),
@@ -108,47 +108,47 @@ const createUser = async (req, res) => {
     }
 
     const { email } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const existingAdmin = await Admin.findOne({ email });
+    if (existingAdmin) {
       return res
         .status(400)
         .json({ error: "Bu email allaqachon ro'yxatdan o'tgan" });
     }
 
-    const newUser = new User(req.body);
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    const newAdmin = new Admin(req.body);
+    const savedAdmin = await newAdmin.save();
+    res.status(201).json(savedAdmin);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 // Foydalanuvchilarni o'qish
-const getUsers = async (req, res) => {
+const getAdmins = async (req, res) => {
   try {
-    const users = await User.find();
-    res.status(200).json(users);
+    const admins = await Admin.find();
+    res.status(200).json(admins);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Foydalaniuvchilarni idisi bilan oʻqish
-const getUserById = async (req, res) => {
+//  idisi bilan oʻqish
+const getAdminById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    const admin = await Admin.findById(id);
+    if (!admin) {
+      return res.status(404).json({ error: "Admin not found" });
     }
-    res.status(200).json(user);
+    res.status(200).json(admin);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Foydalanuvchini yangilash
-const updateUser = async (req, res) => {
+//  yangilash
+const updateAdmin = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -156,7 +156,6 @@ const updateUser = async (req, res) => {
       fullname: Joi.string(),
       email: Joi.string().email(),
       password: Joi.string().min(4),
-      // Diğer alanlar ve doğrulama kuralları
     });
 
     const { error } = schema.validate(req.body);
@@ -164,33 +163,33 @@ const updateUser = async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+    const updatedAdmin = await Admin.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    res.status(200).json(updatedUser);
+    res.status(200).json(updatedAdmin);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Foydalanuvchini o'chirish
-const deleteUser = async (req, res) => {
+//  o'chirish
+const deleteAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    await User.findByIdAndDelete(id);
-    res.status(200).json({ message: "User deleted successfully" });
+    await Admin.findByIdAndDelete(id);
+    res.status(200).json({ message: "Admin deleted successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 module.exports = {
-  createUser,
-  getUsers,
-  getUserById,
-  updateUser,
-  deleteUser,
-  registerUser,
-  loginUser,
-  registerAndLoginUser,
+  createAdmin,
+  getAdmins,
+  getAdminById,
+  updateAdmin,
+  deleteAdmin,
+  registerAdmin,
+  loginAdmin,
+  registerAndLoginAdmin,
 };
