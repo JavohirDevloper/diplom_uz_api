@@ -4,6 +4,7 @@ const Income = require("../models/Incomes");
 // Joi validatsiya skemasi
 const incomeValidationSchema = Joi.object({
   user_ref_id: Joi.string().required(),
+  file_ref_id: Joi.string().required(),
 });
 
 // Income yaratish
@@ -27,19 +28,22 @@ const createIncome = async (req, res) => {
 
 // Barcha Incomelarni olish
 const getAllIncomes = async (req, res) => {
-    try {
-        const incomes = await Income.find().populate("user_ref_id");
-        res.json(incomes);
-      } catch (err) {
-        console.error("incomesni o'qishda xatolik yuz berdi:", err);
-        res.status(500).json({ error: "Serverda xatolik yuz berdi" });
-      }
+  try {
+    const incomes = await Income.find()
+      .populate([{ path: "user_ref_id", params: "file_ref_id" }])
+      .exec();
+    res.json(incomes);
+  } catch (err) {
+    res.status(500).json({ error: "Serverda xatolik yuz berdi" });
+  }
 };
 
 // Belgilangan ID bo'yicha Income olish
 const getIncomeById = async (req, res) => {
   try {
-    const income = await Income.findById(req.params.id).populate("user_ref_id");
+    const income = await Income.findById(req.params.id).populate([
+      { path: "user_ref_id", params: "file_ref_id" },
+    ]);
     if (!income) {
       return res.status(404).json({ error: "Income topilmadi" });
     }
