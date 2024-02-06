@@ -9,8 +9,8 @@ const UserRouter = require("./routers/user.router.js");
 const ViewsRouter = require("./routers/views.router.js");
 const IncomeRouter = require("./routers/income.router.js");
 const SuperAdminRouter = require("./routers/super_admin.router.js");
-
-
+const CategoryRouter = require("./routers/category.router.js");
+const SubCategoryRouter = require("./routers/sub_category.router.js");
 dotenv.config();
 const app = express();
 // app use
@@ -22,7 +22,8 @@ app.use(UserRouter);
 app.use(ViewsRouter)
 app.use(IncomeRouter);
 app.use(SuperAdminRouter)
-
+app.use(CategoryRouter);
+app.use(SubCategoryRouter)
 // databaza
 db();
 
