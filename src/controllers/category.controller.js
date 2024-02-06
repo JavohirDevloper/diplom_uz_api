@@ -21,7 +21,6 @@ const createCategory = async (req, res) => {
     await category.save();
     res.status(201).json(category);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };
@@ -31,7 +30,6 @@ const getCategories = async (req, res) => {
     const categories = await Category.find();
     res.json(categories);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };
@@ -45,14 +43,12 @@ const getCategoryById = async (req, res) => {
     }
     res.json(category);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };
 
 const updateCategory = async (req, res) => {
   try {
-    // Validate category data
     const { error } = categoryValidationSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
@@ -69,7 +65,6 @@ const updateCategory = async (req, res) => {
     }
     res.json(updatedCategory);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };
@@ -83,7 +78,6 @@ const deleteCategory = async (req, res) => {
     }
     res.json({ message: "Category deleted successfully" });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };
