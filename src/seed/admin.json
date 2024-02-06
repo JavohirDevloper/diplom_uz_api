@@ -1,0 +1,26 @@
+[
+  {
+    "fullname": "Admin",
+    "role": "admin",
+    "email": "admin@gmail.com",
+    "password": "1234"
+  },
+  {
+    "fullname": "Super Admin",
+    "role": "super_admin",
+    "email": "superadmin@gmail.com",
+    "password": "1234"
+  },
+  {
+    "fullname": "Muxammadiyev Javohir",
+    "role": "super_admin",
+    "email": "javohir@gmail.com",
+    "password": "1234"
+  },
+  {
+    "fullname": "Baxa",
+    "role": "super_admin",
+    "email": "baxa@gmail.com",
+    "password": "1234"
+  }
+]
