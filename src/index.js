@@ -11,19 +11,22 @@ const IncomeRouter = require("./routers/income.router.js");
 const SuperAdminRouter = require("./routers/super_admin.router.js");
 const CategoryRouter = require("./routers/category.router.js");
 const SubCategoryRouter = require("./routers/sub_category.router.js");
+const FilesRouter = require("./routers/file.router.js");
 dotenv.config();
 const app = express();
 // app use
 app.use(express.json());
+app.use(express.static("upload"));
 app.use(cors());
 
-// routers 
+// routers
 app.use(UserRouter);
-app.use(ViewsRouter)
+app.use(ViewsRouter);
 app.use(IncomeRouter);
-app.use(SuperAdminRouter)
+app.use(SuperAdminRouter);
 app.use(CategoryRouter);
-app.use(SubCategoryRouter)
+app.use(SubCategoryRouter);
+app.use(FilesRouter);
 // databaza
 db();
 
