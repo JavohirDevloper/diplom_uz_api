@@ -1,6 +1,3 @@
-const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
 const File = require("../models/File");
 const Joi = require("joi");
 
@@ -16,7 +13,7 @@ const fileValidationSchema = Joi.object({
 
 const createFile = async (req, res) => {
   try {
-      const { error } = fileValidationSchema.validate(req.body);
+    const { error } = fileValidationSchema.validate(req.body);
 
     const file = new File({
       file_name: req.file.filename,
@@ -31,8 +28,6 @@ const createFile = async (req, res) => {
     await file.save();
     res.status(201).json(file);
   } catch (error) {
-    console.error(error);
-
     res.status(500).json({ error: "Server error" });
   }
 };
@@ -51,7 +46,6 @@ const getFileByID = async (req, res) => {
     }
     res.download(file.file);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };
@@ -67,7 +61,6 @@ const updateFile = async (req, res) => {
     }
     res.json(updatedFile);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };
@@ -83,7 +76,6 @@ const deleteFile = async (req, res) => {
 
     res.json({ message: "File deleted successfully" });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };
