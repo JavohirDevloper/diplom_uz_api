@@ -31,7 +31,6 @@ const createAdmin = async (req, res) => {
     await admin.save();
     res.status(201).json(admin);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -40,12 +39,10 @@ const getAllAdmins = async (req, res) => {
     const admins = await SuperAdmin.find();
     res.json(admins);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-//  idisi bilan oʻqish
 const getAdminById = async (req, res) => {
   try {
     const { id } = req.params;
