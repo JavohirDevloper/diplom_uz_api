@@ -2,6 +2,19 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
+    username: {
+      type: mongoose.SchemaTypes.String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: mongoose.SchemaTypes.String,
+      required: true,
+    },
+    fullname: {
+      type: mongoose.SchemaTypes.String,
+      required: true,
+    },
     email: {
       type: mongoose.SchemaTypes.String,
       trim: true,
@@ -12,16 +25,10 @@ const UserSchema = new mongoose.Schema(
         "Please fill a valid email address",
       ],
     },
-    password: {
-      type: mongoose.SchemaTypes.String,
-      required: true,
-    },
-    fullname: {
-      type: mongoose.SchemaTypes.String,
-      required: true,
-    },
     subscription_status: {
       type: mongoose.SchemaTypes.String,
+      enum: ["true", "false"],
+      default: "false",
     },
     post_ref_id: {
       type: mongoose.SchemaTypes.ObjectId,
@@ -38,6 +45,7 @@ const UserSchema = new mongoose.Schema(
     timestamps: {
       createdAt: "created_at",
       updatedAt: "updated_at",
+      deletedAt: "deleted_at",
     },
   }
 );
