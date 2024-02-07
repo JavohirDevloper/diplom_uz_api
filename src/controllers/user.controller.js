@@ -3,10 +3,11 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// register user
+// register user  
 const registerAndLoginUser = async (req, res) => {
   try {
     const schema = Joi.object({
+      username: Joi.string().required(),
       fullname: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().min(4).required(),
@@ -17,7 +18,7 @@ const registerAndLoginUser = async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { fullname, email, password } = req.body;
+    const { username, fullname, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -27,7 +28,12 @@ const registerAndLoginUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new User({ fullname, email, password: hashedPassword });
+    const newUser = new User({
+      username,
+      fullname,
+      email,
+      password: hashedPassword,
+    });
     const savedUser = await newUser.save();
 
     const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET, {
@@ -43,6 +49,7 @@ const registerAndLoginUser = async (req, res) => {
 const registerUser = async (req, res) => {
   try {
     const schema = Joi.object({
+      username: Joi.string().required(),
       fullname: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().min(4).required(),
@@ -97,6 +104,7 @@ const loginUser = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     const schema = Joi.object({
+      username: Joi.string().required(),
       fullname: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().min(4).required(),
@@ -153,6 +161,7 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
 
     const schema = Joi.object({
+      username: Joi.string().required(),
       fullname: Joi.string(),
       email: Joi.string().email(),
       password: Joi.string().min(4),

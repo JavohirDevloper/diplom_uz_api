@@ -11,13 +11,17 @@ const positionSchema = Joi.object({
   }),
 });
 
-const getPosition = async (req, res) => {
+const createPosition = async (req, res) => {
   try {
-    const positions = await Position.find();
-    console.log(res.json(positions));
+    const { error } = positionSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+    const newPosition = await Position.create(req.body);
+    res.status(201).json(newPosition);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Server error" , error: error.message });
   }
 };
 const getPositionById = async (req, res) => {
@@ -31,20 +35,6 @@ const getPositionById = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
-
-const createPosition = async (req, res) => {
-  try {
-    const { error } = positionSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-    const newPosition = await Position.create(req.body);
-    res.status(201).json(newPosition);
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
-  }
-};
-
 const updatePositionById = async (req, res) => {
   try {
     const { error } = positionSchema.validate(req.body);
@@ -78,7 +68,6 @@ const deletePositionById = async (req, res) => {
 };
 
 module.exports = {
-  getPosition,
   getPositionById,
   createPosition,
   updatePositionById,

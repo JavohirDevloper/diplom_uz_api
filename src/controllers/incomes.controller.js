@@ -30,7 +30,7 @@ const createIncome = async (req, res) => {
 const getAllIncomes = async (req, res) => {
   try {
     const incomes = await Income.find()
-      .populate([{ path: "user_ref_id", params: "file_ref_id" }])
+      .populate([{ path: "user_ref_id", path: "file_ref_id" }])
       .exec();
     res.json(incomes);
   } catch (err) {
@@ -42,7 +42,7 @@ const getAllIncomes = async (req, res) => {
 const getIncomeById = async (req, res) => {
   try {
     const income = await Income.findById(req.params.id).populate([
-      { path: "user_ref_id", params: "file_ref_id" },
+      { path: "user_ref_id", path: "file_ref_id" },
     ]);
     if (!income) {
       return res.status(404).json({ error: "Income topilmadi" });
