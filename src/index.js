@@ -12,7 +12,8 @@ const SuperAdminRouter = require("./routers/super_admin.router.js");
 const CategoryRouter = require("./routers/category.router.js");
 const SubCategoryRouter = require("./routers/sub_category.router.js");
 const FilesRouter = require("./routers/file.router.js");
-const PositionRouter = require("./routers/position.router.js")
+const PositionRouter = require("./routers/position.router.js");
+const OrderRouter = require("./routers/order.router.js");
 dotenv.config();
 const app = express();
 // app use
@@ -29,6 +30,7 @@ app.use(CategoryRouter);
 app.use(SubCategoryRouter);
 app.use(FilesRouter);
 app.use(PositionRouter);
+app.use(OrderRouter);
 // databaza
 db();
 
