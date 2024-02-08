@@ -75,7 +75,7 @@ const updatePortifolio = async (req, res) => {
 
 const deletePortifolio = async (req, res) => {
   try {
-    await Portifolio.findByIdAndRemove(req.params.id);
+    await Portifolio.findByIdAndDelete(req.params.id);
     res.json({ message: "Portfolio deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
