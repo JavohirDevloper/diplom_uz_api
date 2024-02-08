@@ -15,6 +15,25 @@ const UserSchema = new mongoose.Schema(
       type: mongoose.SchemaTypes.String,
       required: true,
     },
+    phone_number: {
+      type: mongoose.SchemaTypes.Number,
+      required: true,
+      unique: true,
+    },
+    about: {
+      type: [mongoose.SchemaTypes.String],
+      required: true,
+    },
+    specialization: {
+      type: mongoose.SchemaTypes.String,
+      required: true,
+    },
+    images: {
+      type: mongoose.SchemaTypes.String,
+      required: true,
+      default:
+        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+    },
     email: {
       type: mongoose.SchemaTypes.String,
       trim: true,
