@@ -16,6 +16,7 @@ const PositionRouter = require("./routers/position.router.js");
 const OrderRouter = require("./routers/order.router.js");
 const PortifolioRouter = require("./routers/portifolio.router")
 const CommentRouter = require("./routers/comment.router")
+const ReviewsRouter = require("./routers/reviews.router.js")
 dotenv.config();
 const app = express();
 // app use
@@ -35,6 +36,7 @@ app.use(PositionRouter);
 app.use(OrderRouter);
 app.use(PortifolioRouter);
 app.use(CommentRouter)
+app.use(ReviewsRouter);
 // databaza
 db();
 
