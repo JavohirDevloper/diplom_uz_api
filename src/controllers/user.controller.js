@@ -3,7 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// register user  
+// register user
 const registerAndLoginUser = async (req, res) => {
   try {
     const schema = Joi.object({
@@ -134,8 +134,20 @@ const createUser = async (req, res) => {
 // Foydalanuvchilarni o'qish
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
-    res.status(200).json(users);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const users = await User.find().skip(skip).limit(limit);
+    const totalCount = await User.countDocuments();
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    res.status(200).json({
+      users,
+      totalPages,
+      currentPage: page,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
