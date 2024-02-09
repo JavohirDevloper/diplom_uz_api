@@ -5,7 +5,7 @@ const isLoggedIn = require("../shared/auth/isLoggedIn");
 
 
 router.post("/comment",isLoggedIn,  commentController.createComment);
-router.get("/comment/:id",isLoggedIn, commentController.getComment);
+router.get("/comment",isLoggedIn, commentController.getComment);
 router.put("/comment/:id",isLoggedIn, commentController.updateCommentById);
 router.delete("/comment/:id",isLoggedIn, commentController.deleteCommentById);
 
