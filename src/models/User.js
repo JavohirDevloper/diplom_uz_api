@@ -16,9 +16,8 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     phone_number: {
-      type: mongoose.SchemaTypes.Number,
+      type: mongoose.SchemaTypes.String,
       required: true,
-      unique: true,
     },
     about: {
       type: [mongoose.SchemaTypes.String],
@@ -26,7 +25,7 @@ const UserSchema = new mongoose.Schema(
     },
     specialization: {
       type: mongoose.SchemaTypes.String,
-      required: true,
+    //   required: true,
     },
     images: {
       type: mongoose.SchemaTypes.String,
