@@ -1,9 +1,10 @@
 const Joi = require("joi");
-const path = require("path");
-const fs = require("fs");
+const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const path = require("path");
+const fs = require("fs");
+const User = require("../models/User.js");
 
 const registerAndLoginUser = async (req, res) => {
   try {
@@ -12,14 +13,15 @@ const registerAndLoginUser = async (req, res) => {
       fullname: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().min(4).required(),
+      phone_number: Joi.string().required(),
     });
 
     const { error } = schema.validate(req.body);
     if (error) {
-      return res.status(400).json({ error: error.details[0] });
+      return res.status(400).json({ error: error.details[0].message });
     }
 
-    const { username, fullname, email, password } = req.body;
+    const { username, fullname, email, password, phone_number } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -34,6 +36,7 @@ const registerAndLoginUser = async (req, res) => {
       fullname,
       email,
       password: hashedPassword,
+      phone_number,
     });
     const savedUser = await newUser.save();
 
@@ -54,51 +57,102 @@ const registerUser = async (req, res) => {
       fullname: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().min(4).required(),
+      phone_number: Joi.string().required(),
     });
 
     const { error } = schema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
-
     await registerAndLoginUser(req, res);
   } catch (error) {
     res.status(400).json({ error });
   }
 };
 
-const loginUser = async (req, res) => {
-  try {
-    const schema = Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-    });
+const phone_numberResetTokens = {};
 
-    const { error } = schema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.details[0] });
-    }
+const userLogin = async (req, res) => {
+  const { email } = req.body;
+  const users = await User.find({ email: email });
 
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid credentials" });
-    }
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-    res.status(200).json({ token, user });
-  } catch (error) {
-    res.status(400).json({ error });
+  const user = users.find((user) => user.email === email);
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
   }
+
+  const resetToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+  const tokenData = {
+    code: Math.floor(100000 + Math.random() * 900000).toString(),
+    token: resetToken,
+  };
+  phone_numberResetTokens[resetToken] = tokenData;
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "muhammadiyevj72@gmail.com",
+      pass: "qytkdqxapslcdmya",
+    },
+  });
+
+  const resetURL = `${encodeURIComponent(tokenData.code)}`;
+
+  const mailOptions = {
+    from: email,
+    to: email,
+    subject: "Tasdiqlash cod",
+    text: `Sizning tasdiqlovchi codingiz buni hech kimga bermang: ${resetURL}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while sending the email" });
+    } else {
+      console.log("Email sent:", info.response);
+      res.json({ message: "Sizning gmailinga cod bordi" });
+    }
+  });
+};
+
+const resetcode = (req, res) => {
+  const { token } = req.params;
+  const { code, phone_number } = req.body;
+
+  const tokenData = phone_numberResetTokens[token];
+
+  if (!tokenData) {
+    return res.status(400).json({ error: "Invalid or expired token" });
+  }
+  if (tokenData.code !== code) {
+    return res.status(400).json({ error: "Invalid verification code" });
+  }
+  const user = users.find((user) => user.id === tokenData.userId);
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  user.phone_number = phone_number;
+  delete phone_numberResetTokens[token];
+  res.json({ message: "Sizning gmailinga cod bordi" });
+};
+
+const getTokenByCode = (req, res) => {
+  const { code } = req.params;
+  const tokenData = Object.values(phone_numberResetTokens).find(
+    (data) => data.code === code
+  );
+  if (!tokenData) {
+    return res.status(404).json({ error: "Token mavjud emas" });
+  }
+
+  const { token } = tokenData;
+
+  res.json({ token });
 };
 
 const createUser = async (req, res) => {
@@ -150,7 +204,11 @@ const getUsers = async (req, res) => {
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    const users = await User.find().skip(skip).limit(limit).select("-password");
+    const users = await User.find()
+      .skip(skip)
+      .limit(limit)
+      .select("-password")
+      .populate("post_ref_id");
     const totalCount = await User.countDocuments();
 
     const totalPages = Math.ceil(totalCount / limit);
@@ -168,7 +226,7 @@ const getUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id).select("-password");
+    const user = await User.findById(id).select("-password").populate("post_ref_id");;
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -260,10 +318,12 @@ const deleteUser = async (req, res) => {
 module.exports = {
   createUser,
   getUsers,
+  userLogin,
+  resetcode,
+  getTokenByCode,
   getUserById,
   updateUser,
   deleteUser,
   registerUser,
-  loginUser,
   registerAndLoginUser,
 };

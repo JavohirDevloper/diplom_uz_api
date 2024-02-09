@@ -9,11 +9,11 @@ const portifolioSchema = Joi.object({
 
 const getPortifolios = async (req, res) => {
   try {
-    const portfolios = await Portifolio.find().populate({
-      path: "user_ref_id",
-      path: "cat_ref_id",
-      path: "sub_ref_id",
-    });
+    const portfolios = await Portifolio.find().populate([
+      { path: "user_ref_id" },
+      { path: "cat_ref_id" },
+      { path: "sub_ref_id" },
+    ]);
     res.json(portfolios);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });

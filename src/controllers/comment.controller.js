@@ -9,10 +9,12 @@ const commentSchema = Joi.object({
 
 const getComment = async (req, res) => {
   try {
-    const comments = await Comment.find().populate({
-      path: "file_ref_id",
-      path: "user_ref_id",
-    });
+    const comments = await Comment.find().populate([
+      {
+        path: "file_ref_id",
+      },
+      { path: "user_ref_id" },
+    ]);
     res.json(comments);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });

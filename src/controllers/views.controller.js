@@ -3,7 +3,8 @@ const { View } = require("../models/Views");
 const getViews = async (req, res) => {
   try {
     const views = await View.find().populate([
-      { path: "user_ref_id", path: "file_ref_id" },
+      { path: "user_ref_id" },
+      { path: "file_ref_id" },
     ]);
     res.json(views);
   } catch (err) {
@@ -16,7 +17,8 @@ const getViewsId = async (req, res) => {
 
   try {
     const view = await View.findById(id).populate([
-      { path: "user_ref_id", path: "file_ref_id" },
+      { path: "user_ref_id" },
+      { path: "file_ref_id" },
     ]);
     res.json(view);
   } catch (err) {
