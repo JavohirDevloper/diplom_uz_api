@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const superAdminController = require("../controllers/super_admin.controller");
+const AdminController = require("../controllers/super_admin.controller");
 const isLoggedIn = require("../shared/auth/isLoggedIn");
 
-// Super admin login
-router.post("/admin/login", superAdminController.SuperAdminLogin);
+// admin login
+router.post("/admin/login", AdminController.AdminLogin);
 
 // Admin
-router.post("/admin", isLoggedIn, superAdminController.createAdmin);
-router.get("/admin", isLoggedIn, superAdminController.getAllAdmins);
-router.get("/admin/:id", isLoggedIn, superAdminController.getAdminById);
-router.put("/admin/:id", isLoggedIn, superAdminController.updateAdmin);
-router.delete("/admin/:id", isLoggedIn, superAdminController.deleteAdmin);
+router.post("/admin", isLoggedIn, AdminController.createAdmin);
+router.get("/admin", isLoggedIn, AdminController.getAllAdmins);
+router.get("/admin/:id", isLoggedIn, AdminController.getAdminById);
+router.put("/admin/:id", isLoggedIn, AdminController.updateAdmin);
+router.delete("/admin/:id", isLoggedIn, AdminController.deleteAdmin);
 
 module.exports = router;
