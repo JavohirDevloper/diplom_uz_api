@@ -21,7 +21,7 @@ const createCategory = async (req, res) => {
     await category.save();
     res.status(201).json(category);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json(error);
   }
 };
 
@@ -30,7 +30,8 @@ const getCategories = async (req, res) => {
     const categories = await Category.find();
     res.json(categories);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+
+    res.status(500).json(error);
   }
 };
 

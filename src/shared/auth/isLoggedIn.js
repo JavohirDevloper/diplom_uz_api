@@ -12,21 +12,30 @@ const jwt = require("jsonwebtoken");
 
 const isLoggedIn = async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
+    // console.log(req.headers);
+    const {access_token} = req.headers;
+    // console.log(access_token);
+        let token =  jwt.verify(access_token, config.jwt.secret,)
+        // console.log(token);
+
     if (!token) {
       throw new UnauthorizedError("Unauthorized.");
     }
+
+    if(token.role === "admin" || token.role === "super_admin") {  
+      return next()
+    }
     
-    const decoded = jwt.verify(token, config.jwt.secret, {
-      ignoreExpiration: false,
-    });
     console.log(decoded);
 
     req.user = decoded.user;
 
     next();
   } catch (error) {
-    next(new UnauthorizedError(error.message));
+    if(error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({error: 'invalide token'})
+    }
+    res.status(400).json({ data: "serverda xatolik." })
   }
 };
 

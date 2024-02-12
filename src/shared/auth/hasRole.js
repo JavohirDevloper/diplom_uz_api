@@ -11,10 +11,9 @@ const { ForbiddenError } = require("../errors");
 const hasRole = (roles) => {
   return async (req, res, next) => {
     try {
-      const { role } = req.user;
-      if (!roles.includes(role)) {
-        throw new ForbiddenError(`This ${role} is not allowed this right!`);
-      }
+      console.log(req.headers);
+      const { access_token} = req.headers;
+      console.log(access_token);
 
       next();
     } catch (error) {

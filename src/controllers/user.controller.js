@@ -66,7 +66,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-const phone_number_tokens_file = path.join(__dirname, "email.json");
+const phone_number_tokens_file = path.join(__dirname, "../email/email.json");
 let phone_number_tokens = {};
 
 if (fs.existsSync(phone_number_tokens_file)) {
@@ -161,6 +161,19 @@ const getTokenByCode = (req, res) => {
   }
 
   const { token } = tokenData;
+  const currentTimestamp = new Date().getTime();
+  const tokenTimestamp = tokenData.timestamp;
+
+  const TWO_MINUTES = 1 * 60 * 1000;
+
+  if (currentTimestamp - tokenTimestamp > TWO_MINUTES) {
+    delete phone_number_tokens[token];
+    fs.writeFileSync(
+      phone_number_tokens_file,
+      JSON.stringify(phone_number_tokens)
+    );
+    return res.status(400).json({ error: "Token muddati o'tgan" });
+  }
 
   res.json({ token });
 };
