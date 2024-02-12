@@ -21,6 +21,7 @@ const createCategory = async (req, res) => {
     await category.save();
     res.status(201).json(category);
   } catch (error) {
+    console.log(error.message);
     res.status(500).json(error);
   }
 };
@@ -44,7 +45,7 @@ const getCategoryById = async (req, res) => {
     }
     res.json(category);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -66,7 +67,7 @@ const updateCategory = async (req, res) => {
     }
     res.json(updatedCategory);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -79,7 +80,7 @@ const deleteCategory = async (req, res) => {
     }
     res.json({ message: "Category deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({error});
   }
 };
 module.exports = {

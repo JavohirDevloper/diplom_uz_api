@@ -16,7 +16,7 @@ const getPortifolios = async (req, res) => {
     ]);
     res.json(portfolios);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -43,7 +43,7 @@ const createPortifolio = async (req, res) => {
     const savedPortfolio = await newPortfolio.save();
     res.json(savedPortfolio);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -69,7 +69,7 @@ const updatePortifolio = async (req, res) => {
     );
     res.json(updatedPortfolio);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -78,7 +78,7 @@ const deletePortifolio = async (req, res) => {
     await Portifolio.findByIdAndDelete(req.params.id);
     res.json({ message: "Portfolio deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 

@@ -39,7 +39,7 @@ const getAllAdmins = async (req, res) => {
     const admins = await Admin.find();
     res.json(admins);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({error});
   }
 };
 
@@ -52,7 +52,7 @@ const getAdminById = async (req, res) => {
     }
     res.status(200).json(admin);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error });
   }
 };
 
@@ -76,7 +76,7 @@ const updateAdmin = async (req, res) => {
     });
     res.status(200).json(updatedAdmin);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error });
   }
 };
 
@@ -87,7 +87,7 @@ const deleteAdmin = async (req, res) => {
     await Admin.findByIdAndDelete(id);
     res.status(200).json({ message: "Admin deleted successfully" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error });
   }
 };
 module.exports = {

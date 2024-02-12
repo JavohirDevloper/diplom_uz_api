@@ -17,7 +17,7 @@ const getComment = async (req, res) => {
     ]);
     res.json(comments);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -39,7 +39,7 @@ const createComment = async (req, res) => {
     const savedComment = await newComment.save();
     res.json(savedComment);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -64,7 +64,7 @@ const updateCommentById = async (req, res) => {
     );
     res.json(updatedComment);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error });
   }
 };
 
@@ -73,7 +73,7 @@ const deleteCommentById = async (req, res) => {
     await Comment.findByIdAndDelete(req.params.id);
     res.json({ message: "Comment deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error });
   }
 };
 

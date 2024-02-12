@@ -13,7 +13,7 @@ const getReviews = async (req, res) => {
     });
     res.json(reviews);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -27,7 +27,7 @@ const getReviewById = async (req, res) => {
     }
     res.json(review);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 const createReviews = async (req, res) => {
@@ -45,7 +45,7 @@ const createReviews = async (req, res) => {
     const savedReview = await newReview.save();
     res.json(savedReview);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -67,7 +67,7 @@ const updateReviewById = async (req, res) => {
     );
     res.json(updatedReview);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -76,7 +76,7 @@ const deleteReviewsById = async (req, res) => {
     await Reviews.findByIdAndDelete(req.params.id);
     res.json({ message: "Review deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error});
   }
 };
 

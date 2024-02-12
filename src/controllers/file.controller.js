@@ -28,7 +28,7 @@ const createFile = async (req, res) => {
     await file.save();
     res.status(201).json(file);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error });
   }
 };
 
@@ -46,7 +46,7 @@ const getFileByID = async (req, res) => {
     }
     res.download(file.file);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -57,11 +57,11 @@ const updateFile = async (req, res) => {
       new: true,
     });
     if (!updatedFile) {
-      return res.status(404).json({ error: "File not found" });
+      return res.status(404).json({ error});
     }
     res.json(updatedFile);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -76,7 +76,7 @@ const deleteFile = async (req, res) => {
 
     res.json({ message: "File deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error });
   }
 };
 module.exports = {

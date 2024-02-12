@@ -27,7 +27,7 @@ const createSubCategory = async (req, res) => {
     await subCategory.save();
     res.status(201).json(subCategory);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -36,7 +36,7 @@ const getSubCategories = async (req, res) => {
     const subCategories = await SubCategory.find().populate("cat_ref_id");
     res.json(subCategories);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -51,7 +51,7 @@ const getSubCategoryById = async (req, res) => {
     }
     res.json(subCategory);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -73,7 +73,7 @@ const updateSubCategory = async (req, res) => {
     }
     res.json(updatedSubCategory);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error});
   }
 };
 
@@ -86,7 +86,7 @@ const deleteSubCategory = async (req, res) => {
     }
     res.json({ message: "SubCategory deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error});
   }
 };
 

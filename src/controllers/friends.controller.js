@@ -10,7 +10,7 @@ const getAllFriend = async (req, res) => {
     const friends = await Friend.find().populate("user_ref_id");
     res.json(friends);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error });
   }
 };
 
@@ -22,7 +22,7 @@ const getFriendById = async (req, res) => {
     }
     res.json(friend);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({error});
   }
 };
 const createFriend = async (req, res) => {
@@ -40,7 +40,7 @@ const createFriend = async (req, res) => {
     const savedFriend = await newFriend.save();
     res.json(savedFriend);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error });
   }
 };
 
@@ -62,7 +62,7 @@ const updatedFriend = async (req, res) => {
     );
     res.json(updatedFriend);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error });
   }
 };
 
@@ -71,7 +71,7 @@ const deleteFreind = async (req, res) => {
     await Friend.findByIdAndDelete(req.params.id);
     res.json({ message: "Friend deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error });
   }
 };
 

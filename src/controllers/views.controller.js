@@ -7,8 +7,8 @@ const getViews = async (req, res) => {
       { path: "file_ref_id" },
     ]);
     res.json(views);
-  } catch (err) {
-    res.status(500).json({ error: "Serverda xatolik yuz berdi" });
+  } catch (error) {
+    res.status(500).json({ error });
   }
 };
 
@@ -21,8 +21,8 @@ const getViewsId = async (req, res) => {
       { path: "file_ref_id" },
     ]);
     res.json(view);
-  } catch (err) {
-    res.status(500).json({ error: "Serverda xatolik yuz berdi" });
+  } catch (error) {
+    res.status(500).json({ error });
   }
 };
 
@@ -32,8 +32,8 @@ const deleteViews = async (req, res) => {
   try {
     await View.findByIdAndDelete(id);
     res.json({ message: "View muvaffaqiyatli o'chirildi" });
-  } catch (err) {
-    res.status(500).json({ error: "Serverda xatolik yuz berdi" });
+  } catch (error) {
+    res.status(500).json({ error });
   }
 };
 
@@ -46,8 +46,8 @@ const createView = async (req, res) => {
       { path: "user_ref_id", params: "file_ref_id" },
     ]);
     res.json(populatedView);
-  } catch (err) {
-    res.status(500).json({ error: "Serverda xatolik yuz berdi" });
+  } catch (error) {
+    res.status(500).json({ error });
   }
 };
 

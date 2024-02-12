@@ -22,7 +22,7 @@ const createIncome = async (req, res) => {
       .status(201)
       .json({ message: "Income muvaffaqiyatli yaratildi", income });
   } catch (error) {
-    res.status(500).json({ error: "Server xatosi" });
+    res.status(500).json({ error});
   }
 };
 
@@ -33,8 +33,8 @@ const getAllIncomes = async (req, res) => {
       .populate([{ path: "user_ref_id" }, { path: "file_ref_id" }])
       .exec();
     res.json(incomes);
-  } catch (err) {
-    res.status(500).json({ error: "Serverda xatolik yuz berdi" });
+  } catch (error) {
+    res.status(500).json({ error});
   }
 };
 
@@ -50,7 +50,7 @@ const getIncomeById = async (req, res) => {
     }
     res.json(income);
   } catch (error) {
-    res.status(500).json({ error: "Server xatosi" });
+    res.status(500).json({ error });
   }
 };
 
@@ -71,7 +71,7 @@ const updateIncomeById = async (req, res) => {
 
     res.json({ message: "Income muvaffaqiyatli o'zgartirildi", income });
   } catch (error) {
-    res.status(500).json({ error: "Server xatosi" });
+    res.status(500).json({ error});
   }
 };
 
@@ -84,7 +84,7 @@ const deleteIncomeById = async (req, res) => {
     }
     res.json({ message: "Income muvaffaqiyatli o'chirildi", income });
   } catch (error) {
-    res.status(500).json({ error: "Server xatosi" });
+    res.status(500).json({ error });
   }
 };
 module.exports = {
