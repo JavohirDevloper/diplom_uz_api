@@ -1,4 +1,3 @@
-// routers/fileRouter.js
 const express = require("express");
 const router = express.Router();
 const fileController = require("../controllers/file.controller.js");
@@ -12,6 +11,7 @@ const limiter = rateLimit({
   max: 10, 
   message: "Foydalanuvchi hajmi limitga yetdi. Iltimos, keyinroq harakat qiling.",
 });
+
 router.post("/files", isLoggedIn,limiter, upload.single("file"),fileController.createFile);
 router.get("/:id", isLoggedIn, limiter, fileController.getFileByID);
 router.put("/:id", isLoggedIn,limiter, fileController.updateFile);
