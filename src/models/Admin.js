@@ -4,29 +4,16 @@ const AdminSchema = new mongoose.Schema(
   {
     email: {
       type: mongoose.SchemaTypes.String,
-      trim: true,
-      unique: true,
       required: true,
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Please fill a valid email address",
-      ],
     },
     password: {
       type: mongoose.SchemaTypes.String,
       required: true,
     },
-    fullname: {
-      type: mongoose.SchemaTypes.String,
-      required: true,
-    },
-    subscription_status: {
-      type: mongoose.SchemaTypes.String,
-    },
     role: {
       type: mongoose.SchemaTypes.String,
-      enum: ["admin", "super_admin"],
-      default: "admin",
+      enum: ["user", "admin", "super_admin"],
+      default: "super_admin",
     },
   },
   {
