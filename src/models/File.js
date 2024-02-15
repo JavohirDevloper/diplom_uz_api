@@ -1,21 +1,16 @@
 const mongoose = require("mongoose");
 
 const fileSchema = new mongoose.Schema({
-  file_name: {
+  name: {
     type: mongoose.SchemaTypes.String,
     required: true,
   },
   file: {
     type: mongoose.SchemaTypes.String,
-    required: true,
   },
   size_file: {
     type: mongoose.SchemaTypes.Number,
-    required: true,
-  },
-  page: {
-    type: mongoose.SchemaTypes.Number,
-    required: true,
+    // required: true,
   },
   hashtag: {
     type: mongoose.SchemaTypes.String,
@@ -29,9 +24,9 @@ const fileSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.Number,
     required: true,
   },
-  sub_ref_id: {
+  user_ref_id: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "Sub_Category",
+    ref: "User",
   },
 });
 
