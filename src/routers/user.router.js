@@ -11,9 +11,8 @@ const limiter = rateLimit({
 });
 
 // user authentication
-router.post("/user/register",limiter, UserController.registerAndLoginUser);
-router.post("/user/verify",limiter, UserController.userLogin);
-router.get("/user/code/:code",limiter, UserController.getTokenByCode);
+router.post("/user/register", UserController.registerAndLoginUser);
+router.get("/user/code/:code", UserController.getTokenByCode);
 
 // userlar uchun router
 router.get("/user/:id", isLoggedIn,limiter, UserController.getUserById);
